@@ -3,7 +3,7 @@ import axios from 'axios';
 import MovieCard from './MovieCard';
 import './Home.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 function Home() {
   const [movies, setMovies] = useState([]);

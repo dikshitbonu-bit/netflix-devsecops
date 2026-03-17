@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import MovieCard from './MovieCard';
 import './Watchlist.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 function Watchlist() {
   const [watchlist, setWatchlist] = useState([]);

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import './MovieDetails.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
 
 function MovieDetails() {
