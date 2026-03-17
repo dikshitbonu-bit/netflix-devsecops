@@ -73,7 +73,7 @@ jobs:
       
       - name: Run npm audit
         working-directory: ${{ matrix.directory }}
-        run: npm audit --production --audit-level=high
+        run: npm audit --omit=dev --audit-level=high
 
   hadolint:
     runs-on: ubuntu-latest
