@@ -1,0 +1,87 @@
+name: Main Pipeline
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/**'
+
+jobs:
+  security-scans:
+    uses: ./.github/workflows/reusable-security-scan.yml
+    secrets: inherit
+
+  build-test-frontend:
+    needs: security-scans
+    uses: ./.github/workflows/reusable-build-test.yml
+    with:
+      working_directory: ./netflix-clone/frontend
+      run_build: true
+
+  build-test-backend:
+    needs: security-scans
+    uses: ./.github/workflows/reusable-build-test.yml
+    with:
+      working_directory: ./netflix-clone/backend
+      run_build: false
+
+  docker-build-push-frontend:
+    needs: build-test-frontend
+    uses: ./.github/workflows/reusable-docker-build-push.yml
+    with:
+      service_name: frontend
+      dockerfile_path: ./netflix-clone/frontend/Dockerfile
+      context_path: ./netflix-clone/frontend
+    secrets: inherit
+
+  docker-build-push-backend:
+    needs: build-test-backend
+    uses: ./.github/workflows/reusable-docker-build-push.yml
+    with:
+      service_name: backend
+      dockerfile_path: ./netflix-clone/backend/Dockerfile
+      context_path: ./netflix-clone/backend
+    secrets: inherit
+
+  deploy:
+    needs: [docker-build-push-frontend, docker-build-push-backend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            if [ ! -d "/home/ubuntu/netflix-devsecops" ]; then
+              cd /home/ubuntu
+              git clone https://github.com/dikshitbonu-bit/netflix-devsecops.git
+            fi
+            cd /home/ubuntu/netflix-devsecops
+            git pull origin main
+            
+            cd ./netflix-clone/backend
+            cp .env.example .env
+            sed -i "s/your_tmdb_api_key_here/${{ secrets.TMDB_API_KEY }}/g" .env
+            sed -i "s/your_jwt_secret_here_change_in_production/${{ secrets.JWT_SECRET }}/g" .env
+            sed -i "s/YOUR_SECURE_PASSWORD_HERE/${{ secrets.MONGO_PASSWORD }}/g" .env
+            cd ..
+            
+            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            docker compose up -d --pull always --force-recreate
+            sleep 15
+      
+      - name: Health Check
+        run: |
+          for i in {1..5}; do
+            curl -f http://${{ secrets.EC2_HOST }}/ && break || sleep 5
+          done
+      
+      - name: Smoke Test
+        run: |
+          curl -f http://${{ secrets.EC2_HOST }}/ || exit 1
