@@ -8,6 +8,7 @@ on:
     paths-ignore:
       - 'README.md'
       - '.github/workflows/**'
+  workflow_dispatch:
 jobs:
   security-scans:
     uses: ./.github/workflows/reusable-security-scan.yml
