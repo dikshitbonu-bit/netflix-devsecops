@@ -6,7 +6,7 @@ const User = require('../models/User');
 
 let mongoServer;
 let token;
-let userId;
+
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
@@ -31,7 +31,7 @@ beforeEach(async () => {
     });
   
   token = registerRes.body.token;
-  userId = registerRes.body.user.id;
+  
 });
 
 describe('Watchlist', () => {
