@@ -16,14 +16,14 @@ jobs:
     needs: security-scans
     uses: ./.github/workflows/reusable-build-test.yml
     with:
-      working_directory: frontend
+      working_directory: ./netflix-clone/frontend
       run_build: true
 
   build-test-backend:
     needs: security-scans
     uses: ./.github/workflows/reusable-build-test.yml
     with:
-      working_directory: backend
+      working_directory: ./netflix-clone/backend
       run_build: false
 
   docker-build-push-frontend:
@@ -31,8 +31,8 @@ jobs:
     uses: ./.github/workflows/reusable-docker-build-push.yml
     with:
       service_name: frontend
-      dockerfile_path: ./frontend/Dockerfile
-      context_path: ./frontend
+      dockerfile_path: ./netflix-clone/frontend/Dockerfile
+      context_path: ./netflix-clone/frontend
     secrets: inherit
 
   docker-build-push-backend:
@@ -40,8 +40,8 @@ jobs:
     uses: ./.github/workflows/reusable-docker-build-push.yml
     with:
       service_name: backend
-      dockerfile_path: ./backend/Dockerfile
-      context_path: ./backend
+      dockerfile_path: ./netflix-clone/backend/Dockerfile
+      context_path: ./netflix-clone/backend
     secrets: inherit
 
   deploy:
@@ -65,7 +65,7 @@ jobs:
             cd /home/ubuntu/netflix-devsecops
             git pull origin main
             
-            cd backend
+            cd ./netflix-clone/backend
             cp .env.example .env
             sed -i "s/your_tmdb_api_key_here/${{ secrets.TMDB_API_KEY }}/g" .env
             sed -i "s/your_jwt_secret_here_change_in_production/${{ secrets.JWT_SECRET }}/g" .env
