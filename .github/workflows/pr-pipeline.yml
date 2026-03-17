@@ -18,13 +18,13 @@ jobs:
     needs: security-scans
     uses: ./.github/workflows/reusable-build-test.yml
     with:
-      working_directory: ./netflix-clone/frontend
+      working_directory: netflix-clone/frontend
       run_build: true
 
   build-test-backend:
     needs: security-scans
     uses: ./.github/workflows/reusable-build-test.yml
     with:
-      working_directory: ./netflix-clone/backend
+      working_directory: netflix-clone/backend
       run_build: false
 

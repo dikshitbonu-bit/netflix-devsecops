@@ -19,11 +19,11 @@ jobs:
         run: npm install -g eslint
       
       - name: Run ESLint on frontend
-        run: eslint ./netflix-clone/frontend/src --max-warnings 0
+        run: eslint netflix-clone/frontend/src --max-warnings 0
         continue-on-error: false
       
       - name: Run ESLint on backend
-        run: eslint ./netflix-clone/backend --max-warnings 0
+        run: eslint netflix-clone/backend --max-warnings 0
         continue-on-error: false
 
   sonarqube:
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        directory: [./netflix-clone/frontend, ./netflix-clone/backend]
+        directory: [netflix-clone/frontend, netflix-clone/backend]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -84,11 +84,11 @@ jobs:
       - name: Run Hadolint on frontend Dockerfile
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: ./netflix-clone/frontend/Dockerfile
+          dockerfile: netflix-clone/frontend/Dockerfile
           failure-threshold: warning
       
       - name: Run Hadolint on backend Dockerfile
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: ./netflix-clone/backend/Dockerfile
+          dockerfile: netflix-clone/backend/Dockerfile
           failure-threshold: warning
