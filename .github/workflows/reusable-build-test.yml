@@ -1,0 +1,38 @@
+name: Build and Test
+on:
+  workflow_call:
+    inputs:
+      working_directory:
+        required: true
+        type: string
+      run_build:
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: ${{ inputs.working_directory }}/package-lock.json
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        if: ${{ inputs.run_build }}
+        run: npm run build
+      
+      - name: Run tests
+        run: npm test
