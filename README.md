@@ -7,6 +7,8 @@ A production-grade DevSecOps implementation of a Netflix clone with automated CI
 [![PR Pipeline](https://github.com/dikshitbonu-bit/netflix-devsecops/actions/workflows/pr-pipeline.yml/badge.svg?branch=feature%2Fnetflix-app)](https://github.com/dikshitbonu-bit/netflix-devsecops/actions/workflows/pr-pipeline.yml)
 ## Project Overview
 
+![Netflix-clone](.github/screenshots/Screenshot (11).png)
+
 This project demonstrates enterprise-level DevSecOps practices including:
 - Automated security scanning (SAST, dependency checks, secret detection, container scanning)
 - Multi-stage Docker builds with image optimization
