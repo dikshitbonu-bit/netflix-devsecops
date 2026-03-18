@@ -56,3 +56,13 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+// At the bottom of server.js
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/health`);
+  });
+}
+
+module.exports = app;
