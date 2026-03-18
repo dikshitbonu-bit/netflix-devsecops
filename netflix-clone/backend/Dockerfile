@@ -17,7 +17,6 @@ FROM node:22-alpine
 
 RUN apk update && apk upgrade --no-cache
 
-RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 WORKDIR /app
 
@@ -29,6 +28,8 @@ COPY --from=builder --chown=appuser:appgroup /app/package*.json ./
 
 RUN npm ci --omit=dev && \
     npm cache clean --force
+
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 
 
 COPY --from=builder --chown=appuser:appgroup /app ./
