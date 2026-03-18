@@ -44,7 +44,7 @@ jobs:
           images: ${{ secrets.DOCKER_USERNAME }}/netflix-${{ inputs.service_name }}
           tags: |
             type=raw,value=latest
-            type=sha,prefix=,format=short
+            type=sha,prefix=,format=long
       
       - name: Build Docker image
         uses: docker/build-push-action@v5
@@ -68,4 +68,4 @@ jobs:
       - name: Push image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/netflix-${{ inputs.service_name }}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/netflix-${{ inputs.service_name }}:${{ steps.meta.outputs.sha_short }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/netflix-${{ inputs.service_name }}:${{ github }}
