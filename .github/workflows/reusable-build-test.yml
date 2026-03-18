@@ -28,7 +28,7 @@ jobs:
           cache-dependency-path: ${{ inputs.working_directory }}/package-lock.json
       
       - name: Install dependencies
-        run: npm ci
+        run: npm ci 
       
       - name: Build
         if: ${{ inputs.run_build }}
@@ -36,3 +36,6 @@ jobs:
       
       - name: Run tests
         run: npm test
+        env:
+          NODE_ENV: test
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}

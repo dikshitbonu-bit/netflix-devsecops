@@ -19,11 +19,11 @@ jobs:
         run: npm install -g eslint
       
       - name: Run ESLint on frontend
-        run: eslint netflix-clone/frontend/src --max-warnings 0
+        run:  npx eslint src --ext .js,.jsx --max-warnings 0
         continue-on-error: false
       
       - name: Run ESLint on backend
-        run: eslint netflix-clone/backend --max-warnings 0
+        run: npx eslint netflix-clone/backend --max-warnings 0
         continue-on-error: false
 
   sonarqube:

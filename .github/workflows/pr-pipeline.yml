@@ -20,6 +20,7 @@ jobs:
     with:
       working_directory: netflix-clone/frontend
       run_build: true
+      
 
   build-test-backend:
     needs: security-scans
@@ -27,4 +28,4 @@ jobs:
     with:
       working_directory: netflix-clone/backend
       run_build: false
-
+     
