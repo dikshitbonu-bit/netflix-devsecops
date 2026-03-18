@@ -29,6 +29,7 @@ COPY --from=builder --chown=appuser:appgroup /app/package*.json ./
 # Install ONLY production dependencies - NO dev dependencies!
 # This avoids all the vulnerable packages (glob, minimatch, tar, etc.)
 RUN npm ci --omit=dev && \
+    npm prune --omit=dev && \ 
     npm cache clean --force
 
 # Copy application code from builder
