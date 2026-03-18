@@ -1,27 +1,40 @@
+# Stage 1: Builder stage
+FROM node:22-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install ALL dependencies (including dev dependencies for building)
+RUN npm install
+
+# Copy application source
+COPY . .
+
+# Stage 2: Production stage
 FROM node:22-alpine
 
-
+# Fix OS-level vulnerabilities (including zlib CVE)
 RUN apk update && apk upgrade --no-cache
 
 WORKDIR /app
 
-
+# Create non-root user for security
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-COPY package*.json ./
+# Copy package files from builder
+COPY --from=builder --chown=appuser:appgroup /app/package*.json ./
 
-
-RUN npm install && \
-    npm install glob@11.1.0 --save-exact && \
-    npm install minimatch@10.2.3 --save-exact && \
-    npm install tar@7.5.11 --save-exact && \
+# Install ONLY production dependencies - NO dev dependencies!
+# This avoids all the vulnerable packages (glob, minimatch, tar, etc.)
+RUN npm ci --omit=dev && \
     npm cache clean --force
 
-COPY . .
+# Copy application code from builder
+COPY --from=builder --chown=appuser:appgroup /app ./
 
-
-RUN chown -R appuser:appgroup /app
-
+# Switch to non-root user
 USER appuser
 
 EXPOSE 3000
