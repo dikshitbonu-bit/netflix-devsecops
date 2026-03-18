@@ -1,7 +1,7 @@
 # This is a compose file for netflix clone application. It defines the services for the frontend, backend, and database.
 services:
   frontend:
-    image:  ${DOCKER_USERNAME}/netflix-frontend:latest
+    image:  dikshithbonu/netflix-frontend:latest
     container_name: netflix-frontend
     restart: unless-stopped
     ports:
@@ -13,9 +13,9 @@ services:
       resources:
         limits:
           cpus: '0.5'
-          memory: 256M
+          memory: 256M   
   backend:
-    image:  ${DOCKER_USERNAME}/netflix-backend:latest
+    image:  dikshithbonu/netflix-backend:latest
     container_name: netflix-backend
     restart: unless-stopped
     env_file:
@@ -40,10 +40,8 @@ services:
     restart: unless-stopped 
     volumes:
       - mongo-data:/data/db  
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    env_file:
+      - .env
     deploy:
       resources:
         limits:
