@@ -72,16 +72,14 @@ jobs:
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             JWT_EXPIRE=7d
             NODE_ENV=production
+            EOF
+            cd ..
+            
+            cat > .env << 'EOF'
             MONGO_INITDB_ROOT_USERNAME=admin
             MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_PASSWORD }}
             MONGO_INITDB_DATABASE=netflix
             EOF
-            cd ..
-            
-            export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
-            export MONGO_INITDB_ROOT_USERNAME=admin
-            export MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_PASSWORD }}
-            export MONGO_INITDB_DATABASE=netflix
             docker compose up -d --pull always --force-recreate
             sleep 15
       
