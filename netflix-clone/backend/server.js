@@ -65,7 +65,7 @@ app.use((req, res) => {
 });
 
 // 7. ERROR HANDLER
-app.use((err, req, res, _next) => {
+app.use((err, req, res,) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
