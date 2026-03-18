@@ -79,6 +79,9 @@ jobs:
             cd ..
             
             export DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            export MONGO_INITDB_ROOT_USERNAME=admin
+            export MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_PASSWORD }}
+            export MONGO_INITDB_DATABASE=netflix
             docker compose up -d --pull always --force-recreate
             sleep 15
       
