@@ -1,3 +1,13 @@
+// ========== FIXED server.js ==========
+
+// 1. SET TEST DEFAULTS FIRST (before anything else runs)
+if (process.env.NODE_ENV === 'test') {
+  process.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/netflix_test';
+  process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret-key-min-32-chars-long!!';
+  process.env.TMDB_API_KEY = process.env.TMDB_API_KEY || 'fake-tmdb-key-for-testing';
+  process.env.PORT = process.env.PORT || '0'; // Random port to avoid conflicts
+}
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -12,10 +22,15 @@ const watchlistRoutes = require('./routes/watchlist');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// 2. ONLY connect to MongoDB if URI exists (with error handling)
+if (!process.env.MONGODB_URI) {
+  console.error('FATAL: MONGODB_URI is not defined');
+  if (process.env.NODE_ENV !== 'test') process.exit(1);
+} else {
+  mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
+}
 
 // Middleware
 app.use(helmet());
@@ -44,20 +59,12 @@ app.use((req, res) => {
 });
 
 // Error handler
-app.use((err, req, res,) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/health`);
-});
-
-module.exports = app;
-
-// At the bottom of server.js
+// 3. CONDITIONAL SERVER START (only if NOT test)
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
