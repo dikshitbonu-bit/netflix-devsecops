@@ -2,6 +2,8 @@
 
 A production-grade DevSecOps implementation of a Netflix clone with automated CI/CD pipelines, security scanning, containerization, and cloud deployment.
 
+[![PR Pipeline](https://github.com/dikshitbonu-bit/netflix-devsecops/actions/workflows/pr-pipeline.yml/badge.svg)](https://github.com/dikshitbonu-bit/netflix-devsecops/actions/workflows/pr-pipeline.yml)
+
 ## Project Overview
 
 This project demonstrates enterprise-level DevSecOps practices including:
