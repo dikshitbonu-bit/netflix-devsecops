@@ -1,11 +1,12 @@
-// ========== FIXED server.js ==========
+// ========== FINAL server.js ==========
 
-// 1. SET TEST DEFAULTS FIRST (before anything else runs)
+// 1. TEST DEFAULTS FIRST (before any imports run)
 if (process.env.NODE_ENV === 'test') {
-  process.env.MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/netflix_test';
   process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret-key-min-32-chars-long!!';
+  process.env.JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
   process.env.TMDB_API_KEY = process.env.TMDB_API_KEY || 'fake-tmdb-key-for-testing';
-  process.env.PORT = process.env.PORT || '0'; // Random port to avoid conflicts
+  process.env.PORT = process.env.PORT || '0';
+  // Note: MONGODB_URI is NOT set here - tests handle their own database
 }
 
 const express = require('express');
@@ -22,23 +23,28 @@ const watchlistRoutes = require('./routes/watchlist');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 2. ONLY connect to MongoDB if URI exists (with error handling)
-if (!process.env.MONGODB_URI) {
-  console.error('FATAL: MONGODB_URI is not defined');
-  if (process.env.NODE_ENV !== 'test') process.exit(1);
-} else {
+// 2. DATABASE CONNECTION (skip in test mode)
+if (process.env.NODE_ENV !== 'test') {
+  if (!process.env.MONGODB_URI) {
+    console.error('FATAL: MONGODB_URI is not defined');
+    process.exit(1);
+  }
+  
   mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .catch(err => {
+      console.error('MongoDB connection error:', err);
+      process.exit(1);
+    });
 }
 
-// Middleware
+// 3. MIDDLEWARE
 app.use(helmet());
 app.use(compression());
 app.use(cors());
 app.use(express.json());
 
-// Health check endpoint
+// 4. HEALTH CHECK
 app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'healthy',
@@ -48,23 +54,23 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Routes
+// 5. ROUTES
 app.use('/api/movies', movieRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/watchlist', watchlistRoutes);
 
-// 404 handler
+// 6. 404 HANDLER
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Error handler
-app.use((err, req, res,) => {
+// 7. ERROR HANDLER
+app.use((err, req, res, _next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// 3. CONDITIONAL SERVER START (only if NOT test)
+// 8. SERVER START (skip in test mode)
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
