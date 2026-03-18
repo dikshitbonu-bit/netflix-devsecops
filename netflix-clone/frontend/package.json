@@ -19,6 +19,14 @@
   "eslintConfig": {
     "extends": [
       "react-app"
+    ],
+    "rules": {
+      "react-hooks/exhaustive-deps": "off"
+    }
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(axios)/)"
     ]
   },
   "browserslist": {
