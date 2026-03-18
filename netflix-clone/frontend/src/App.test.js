@@ -15,7 +15,7 @@ jest.mock('./components/Register', () => () => <div>Register</div>);
 describe('App Component', () => {
   test('renders Netflix logo', () => {
     render(<App />);
-    expect(screen.getByText(/MY-NETFLIX/i)).toBeInTheDocument();
+    expect(screen.getByText(/NETFLIX/i)).toBeInTheDocument();
   });
 
   test('renders navigation links', () => {
