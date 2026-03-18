@@ -68,4 +68,4 @@ jobs:
       - name: Push image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/netflix-${{ inputs.service_name }}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/netflix-${{ inputs.service_name }}:${{ github }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/netflix-${{ inputs.service_name }}:${{ github.sha }}
