@@ -18,7 +18,7 @@ function MovieDetails() {
     fetchMovieDetails();
     if (isAuthenticated) 
       checkWatchlist();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [id, isAuthenticated]);
 
   const fetchMovieDetails = async () => {
