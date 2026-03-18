@@ -1,0 +1,45 @@
+.watchlist {
+  padding: 100px 50px 50px 50px;
+  min-height: 100vh;
+}
+
+.watchlist h1 {
+  margin-bottom: 30px;
+  font-size: 32px;
+}
+
+.watchlist-item {
+  position: relative;
+}
+
+.remove-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 8px;
+  transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+  background-color: #f40612;
+}
+
+.watchlist-empty {
+  padding: 150px 50px;
+  text-align: center;
+}
+
+.watchlist-empty h2 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.watchlist-empty p {
+  color: #999;
+  font-size: 18px;
+}

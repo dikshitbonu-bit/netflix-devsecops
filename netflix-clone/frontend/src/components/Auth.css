@@ -1,0 +1,87 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+              url('https://images.unsplash.com/photo-1574267432644-f0fbcbcdd82e?w=1920') center/cover;
+}
+
+.auth-container {
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 60px 68px;
+  border-radius: 4px;
+  max-width: 450px;
+  width: 100%;
+}
+
+.auth-container h1 {
+  color: #fff;
+  margin-bottom: 28px;
+  font-size: 32px;
+}
+
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-container input {
+  padding: 16px 20px;
+  background-color: #333;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.auth-container input::placeholder {
+  color: #8c8c8c;
+}
+
+.auth-container button {
+  padding: 16px;
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background-color 0.2s;
+}
+
+.auth-container button:hover:not(:disabled) {
+  background-color: #f40612;
+}
+
+.auth-container button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: rgba(229, 9, 20, 0.2);
+  border: 1px solid #e50914;
+  color: #fff;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.auth-footer {
+  color: #737373;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.auth-footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
