@@ -7,23 +7,22 @@ on:
       - 'README.md'
 
 jobs:
-  security-scans:
-    uses: ./.github/workflows/reusable-security-scan.yml
-    secrets: inherit
-
   build-test-frontend:
-    needs: security-scans
     uses: ./.github/workflows/reusable-build-test.yml
     with:
       working_directory: ./netflix-clone/frontend
       run_build: true
 
   build-test-backend:
-    needs: security-scans
     uses: ./.github/workflows/reusable-build-test.yml
     with:
       working_directory: ./netflix-clone/backend
       run_build: false
+
+  security-scans:
+    needs: [build-test-frontend, build-test-backend]
+    uses: ./.github/workflows/reusable-security-scan.yml
+    secrets: inherit
 
   docker-build-push-frontend:
     needs: build-test-frontend
