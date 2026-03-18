@@ -20,7 +20,7 @@ describe('App Component', () => {
 
   test('renders navigation links', () => {
     render(<App />);
-    expect(screen.getByText(/Home/i)).toBeInTheDocument();
-    expect(screen.getByText(/Sign In/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Home/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Sign In/i })).toBeInTheDocument();
   });
 });
