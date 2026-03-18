@@ -9,6 +9,7 @@ RUN npm run build # This command creates a production build of the React applica
 # Stage 2: Serve the built application using Nginx
 
 FROM nginx:alpine
+RUN apk update && apk upgrade
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
