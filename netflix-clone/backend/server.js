@@ -4,7 +4,11 @@
 if (process.env.NODE_ENV === 'test') {
   process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret-key-min-32-chars-long!!';
   process.env.JWT_EXPIRE = process.env.JWT_EXPIRE || '7d';
-  process.env.TMDB_API_KEY = process.env.TMDB_API_KEY || 'fake-tmdb-key-for-testing';
+  // Don't touch TMDB_API_KEY if already set
+  // Remove the line entirely, or use:
+  if (!process.env.TMDB_API_KEY) {
+    process.env.TMDB_API_KEY = 'fake-tmdb-key-for-testing';
+  }
   process.env.PORT = process.env.PORT || '0';
   // Note: MONGODB_URI is NOT set here - tests handle their own database
 }
